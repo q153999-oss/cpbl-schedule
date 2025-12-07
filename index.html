@@ -8,15 +8,14 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      background: #0f1115;
-      color: #e5e7eb;
+      background: #f4f6fb;
+      color: #333;
     }
     header {
       padding: 20px;
       text-align: center;
       font-size: 24px;
       font-weight: bold;
-      color: #facc15;
     }
     .container {
       max-width: 680px;
@@ -24,21 +23,19 @@
       padding: 0 16px 40px;
     }
     .card {
-      background: #161a22;
+      background: #fff;
       border-radius: 16px;
       padding: 16px;
       margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.6);
-      border: 1px solid rgba(250,204,21,0.15);
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
     }
     .today {
-      border: 2px solid #facc15;
-      background: #1f2937;
+      border: 2px solid #5b8cff;
+      background: #f0f5ff;
     }
     .date {
       font-weight: 600;
       margin-bottom: 6px;
-      color: #fde047;
     }
     .teams {
       font-size: 18px;
@@ -46,12 +43,12 @@
     }
     .meta {
       font-size: 14px;
-      opacity: .75;
+      opacity: .8;
     }
   </style>
 </head>
 <body>
-  <header>⚾ 2025 中華職棒 賽程</header>
+  <header>⚾ 2025 中信兄弟 賽程</header>
   <div class="container" id="list">載入中...</div>
 
   <script>
@@ -60,9 +57,11 @@
     fetch('schedule.json')
       .then(res => res.json())
       .then(data => {
+        const teamName = '中信兄弟'
         const year = '2025'
-
-        const filtered = data.filter(g => g.date.startsWith(year))
+        const filtered = data.filter(g =>
+          (g.home === teamName || g.away === teamName) && g.date.startsWith(year)
+        )
         
         document.getElementById('list').innerHTML = filtered.length
           ? filtered.map(game => {
@@ -75,7 +74,7 @@
                 </div>
               `
             }).join('')
-          : '<div class="card">2025 年目前沒有賽事</div>'
+          : '<div class="card">2025 年目前沒有中信兄弟的賽事</div>'
       })
       })
   </script>
