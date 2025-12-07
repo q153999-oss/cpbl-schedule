@@ -48,7 +48,7 @@
   </style>
 </head>
 <body>
-  <header>⚾ 中華職棒賽程</header>
+  <header>⚾ 2025 中信兄弟 賽程</header>
   <div class="container" id="list">載入中...</div>
 
   <script>
@@ -57,16 +57,25 @@
     fetch('schedule.json')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('list').innerHTML = data.map(game => {
-          const isToday = game.date === today
-          return `
-            <div class="card ${isToday ? 'today' : ''}">
-              <div class="date">${game.date} ${game.time}</div>
-              <div class="teams">${game.away} vs ${game.home}</div>
-              <div class="meta">📍 ${game.stadium}</div>
-            </div>
-          `
-        }).join('')
+        const teamName = '中信兄弟'
+        const year = '2025'
+        const filtered = data.filter(g =>
+          (g.home === teamName || g.away === teamName) && g.date.startsWith(year)
+        )
+        
+        document.getElementById('list').innerHTML = filtered.length
+          ? filtered.map(game => {
+              const isToday = game.date === today
+              return `
+                <div class="card ${isToday ? 'today' : ''}">
+                  <div class="date">${game.date} ${game.time}</div>
+                  <div class="teams">${game.away} vs ${game.home}</div>
+                  <div class="meta">📍 ${game.stadium}</div>
+                </div>
+              `
+            }).join('')
+          : '<div class="card">2025 年目前沒有中信兄弟的賽事</div>'
+      })
       })
   </script>
 </body>
