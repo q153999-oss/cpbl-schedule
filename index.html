@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPBL 賽程彙整</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      background: #f4f6fb;
+      color: #333;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 680px;
+      margin: auto;
+      padding: 0 16px 40px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .today {
+      border: 2px solid #5b8cff;
+      background: #f0f5ff;
+    }
+    .date {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .teams {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    .meta {
+      font-size: 14px;
+      opacity: .8;
+    }
+  </style>
+</head>
+<body>
+  <header>⚾ 中華職棒賽程</header>
+  <div class="container" id="list">載入中...</div>
+
+  <script>
+    const today = new Date().toISOString().slice(0, 10)
+
+    fetch('schedule.json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('list').innerHTML = data.map(game => {
+          const isToday = game.date === today
+          return `
+            <div class="card ${isToday ? 'today' : ''}">
+              <div class="date">${game.date} ${game.time}</div>
+              <div class="teams">${game.away} vs ${game.home}</div>
+              <div class="meta">📍 ${game.stadium}</div>
+            </div>
+          `
+        }).join('')
+      })
+  </script>
+</body>
+</html>
